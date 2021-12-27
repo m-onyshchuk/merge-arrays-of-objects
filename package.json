@@ -1,0 +1,27 @@
+{
+  "name": "merge-arrays-of-objects",
+  "version": "0.0.1",
+  "description": "Merge two array of objects",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m-onyshchuk/merge-arrays-of-objects.git"
+  },
+  "keywords": [
+    "merge",
+    "array",
+    "objects"
+  ],
+  "author": "M.Onyshchuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/m-onyshchuk/merge-arrays-of-objects/issues"
+  },
+  "homepage": "https://github.com/m-onyshchuk/merge-arrays-of-objects#readme",
+  "dependencies": {
+    "md5": "^2.3.0"
+  }
+}
