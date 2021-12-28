@@ -114,3 +114,29 @@ console.log(merged);
 //   { key: 'A', text: 'text-C', child: { key: 'B' } },
 //   { key: 'B', text: 'text-D', child: { key: 'A' } } ]
 ```
+
+#### Example 6
+Objects arrays; result array has objects copies.
+```js
+const { arrMerge } = require('merge-arrays-of-objects');
+
+let original = [
+  {id:1, value:'A'},
+  {id:2, value:'B'}
+];
+
+let update = [
+  {id:2, value:'C'},
+  {id:3, value:'D'}
+];
+
+let merged = arrMerge(original, update, 'id');
+
+original[0].value = 'AA';
+update[1].value = 'DD';
+
+console.log(merged);
+// [ { id: 1, value: 'A' },
+//   { id: 2, value: 'C' },
+//   { id: 3, value: 'D' } ]
+```
