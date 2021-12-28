@@ -2,6 +2,31 @@
 
 const md5 = require('md5');
 
+/**
+ * Deep copy
+ *
+ * @param item
+ * @returns {*}
+ */
+function deepCopy (item) {
+  let copy = null;
+  try {
+    let str = JSON.stringify(item);
+    copy = JSON.parse(str);
+  } catch (e) {
+    copy = item; // item has circ refs, do not use deep copy
+  }
+  return copy;
+}
+
+/**
+ * Merge two array of objects
+ *
+ * @param arrOriginal - original array
+ * @param arrUpdate - array for update
+ * @param identifier - field or function for object matching (optional)
+ * @returns {*[]}
+ */
 function arrMerge (arrOriginal, arrUpdate, identifier) {
   // check input
   if (!arrOriginal) {
@@ -21,7 +46,7 @@ function arrMerge (arrOriginal, arrUpdate, identifier) {
   }
 
   // start
-  let arrResult = [].concat(arrOriginal);
+  let arrResult = [].concat(deepCopy(arrOriginal));
   let mapOriginal = {};
 
 
@@ -82,12 +107,12 @@ function arrMerge (arrOriginal, arrUpdate, identifier) {
     if (mapOriginal[key]) { // item exists in arrOriginal
       if (mapOriginal[key].hash !== hash) { // need update
         let index = mapOriginal[key].index;
-        arrResult[index] = item;
+        arrResult[index] = deepCopy(item);
         mapOriginal[key] = { key, hash, index };
       }
     } else { // need append new item
       let index = indexNext;
-      indexNext = arrResult.push(item);
+      indexNext = arrResult.push(deepCopy(item));
       mapOriginal[key] = { key, hash, index };
     }
   }

@@ -1,6 +1,7 @@
 ### Merge two array of objects
 Arrays, not objects are being merged. 
 Objects with matching identifiers are replaced.
+Object deep copy placed into result array. 
 To merge, you can select an object field as an identifier. 
 Without identifier objects will be compared by md5 hash.
 You can use callback function to calc object identifier.  

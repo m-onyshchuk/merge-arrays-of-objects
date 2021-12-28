@@ -49,6 +49,15 @@ let testSet = [
     expect: [{key:'A', text:'text-A', child: {key: 'A'}}, {key:'A', text:'text-C', child: {key: 'B'}}, {key:'B', text:'text-D', child: {key: 'A'}}]
   },
   {
+    name: 'Test 6',
+    description: 'Objects arrays; result array has objects copies.',
+    arr1: [{id:1, value:'A'}, {id:2, value:'B'}],
+    arr2: [{id:2, value:'C'}, {id:3, value:'D'}],
+    identifier: 'id',
+    after: (arr1, arr2) => { arr1[0].value = 'AA'; arr2[1].value = 'DD'; return "arr1[0].value = 'AA'; arr2[1].value = 'DD';"; },
+    expect: [{id:1, value:'A'}, {id:2, value:'C'}, {id:3, value:'D'}]
+  },
+  {
     name: 'Test E1',
     description: 'Test of errors; (null, null)',
     arr1: null,
@@ -94,6 +103,10 @@ for (let test of testSet) {
   console.log('arr2: ', test.arr2);
   console.log('expect: ', test.expect);
   let merged = arrMerge(test.arr1, test.arr2, test.identifier);
+  if (test.after) {
+    let modification = test.after(test.arr1, test.arr2);
+    console.log('after: ', modification);
+  }
   console.log('merge:  ', merged);
   let result = check(test.expect, merged);
   if (result === 'OK') {
