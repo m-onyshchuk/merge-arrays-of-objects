@@ -1,6 +1,9 @@
 ### Merge two array of objects
-To merge you need setup object identifier to compare two objects. 
+Arrays, not objects are being merged. 
+Objects with matching identifiers are replaced.
+To merge, you can select an object field as an identifier. 
 Without identifier objects will be compared by md5 hash.
+You can use callback function to calc object identifier.  
 
 #### Example 1
 Simple arrays; no identifier. 
