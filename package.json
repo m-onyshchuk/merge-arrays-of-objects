@@ -1,6 +1,6 @@
 {
   "name": "merge-arrays-of-objects",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Merge two array of objects",
   "main": "index.js",
   "scripts": {
