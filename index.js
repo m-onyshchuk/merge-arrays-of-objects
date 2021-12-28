@@ -3,8 +3,32 @@
 const md5 = require('md5');
 
 function arrMerge (arrOriginal, arrUpdate, identifier) {
+  // check input
+  if (!arrOriginal) {
+    arrOriginal = [];
+  }
+
+  if (!arrUpdate) {
+    arrUpdate = [];
+  }
+
+  if (!Array.isArray(arrOriginal)) {
+    arrOriginal = [arrOriginal];
+  }
+
+  if (!Array.isArray(arrUpdate)) {
+    arrUpdate = [arrUpdate];
+  }
+
+  // start
   let arrResult = [].concat(arrOriginal);
   let mapOriginal = {};
+
+
+  if (!Array.isArray(arrUpdate)) {
+    arrResult.push(arrUpdate);
+    return arrResult;
+  }
 
   let identifierAbsent = !identifier;
   let identifierIsFunc = typeof identifier === 'function';

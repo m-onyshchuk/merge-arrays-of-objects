@@ -48,6 +48,38 @@ let testSet = [
     identifier: item => `${item.key}${item.child.key}`,
     expect: [{key:'A', text:'text-A', child: {key: 'A'}}, {key:'A', text:'text-C', child: {key: 'B'}}, {key:'B', text:'text-D', child: {key: 'A'}}]
   },
+  {
+    name: 'Test E1',
+    description: 'Test of errors; (null, null)',
+    arr1: null,
+    arr2: null,
+    identifier: null,
+    expect: []
+  },
+  {
+    name: 'Test E3',
+    description: 'Test of errors; (7, null)',
+    arr1: 7,
+    arr2: null,
+    identifier: null,
+    expect: [7]
+  },
+  {
+    name: 'Test E2',
+    description: 'Test of errors; (null, 8)',
+    arr1: null,
+    arr2: 8,
+    identifier: null,
+    expect: [8]
+  },
+  {
+    name: 'Test E3',
+    description: 'Test of errors; (7, 8)',
+    arr1: 7,
+    arr2: 8,
+    identifier: null,
+    expect: [7, 8]
+  },
 ];
 
 console.log('==== test start ====');
