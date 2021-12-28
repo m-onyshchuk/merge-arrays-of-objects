@@ -45,15 +45,9 @@ function arrMerge (arrOriginal, arrUpdate, identifier) {
     arrUpdate = [arrUpdate];
   }
 
-  // start
+  // init
   let arrResult = [].concat(deepCopy(arrOriginal));
   let mapOriginal = {};
-
-
-  if (!Array.isArray(arrUpdate)) {
-    arrResult.push(arrUpdate);
-    return arrResult;
-  }
 
   let identifierAbsent = !identifier;
   let identifierIsFunc = typeof identifier === 'function';
