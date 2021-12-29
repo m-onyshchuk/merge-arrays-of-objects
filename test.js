@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Test of exported functions
+// Test of exported functions. Run command: npm test
 
 const { arrMergeAsync, arrMergeSync } = require('./index');
 const md5 = require('md5');
