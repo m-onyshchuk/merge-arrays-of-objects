@@ -1,3 +1,6 @@
+////////////////////////////////////////////////////////////////////////////////
+// Test of exported functions
+
 const { arrMergeAsync, arrMergeSync } = require('./index');
 const md5 = require('md5');
 

@@ -4,8 +4,9 @@ Objects with matching identifiers are replaced.
 Objects deep copies are placing into result array. 
 To merge, you can select an object field as an identifier. 
 Without identifier objects will be compared by md5 hash.
-You can use callback function to calc object identifier.  
-There are sync and async versions of function.
+You can use callback function to calc object identifier.
+
+There are sync and async function versions.
 
 #### Example 1
 Simple arrays; no identifier. 
