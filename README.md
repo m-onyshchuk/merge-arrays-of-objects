@@ -171,5 +171,4 @@ test().then(()=>{});
 // [ { id: 1, value: 'A' },
 //   { id: 2, value: 'C' },
 //   { id: 3, value: 'D' } ]
-
 ```
