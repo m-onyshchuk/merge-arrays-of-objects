@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Test of exported functions. Run command: npm test
 
-const { arrMergeAsync, arrMergeSync } = require('./index');
+const {arrMergeAsync, arrMergeSync} = require('./index');
 const md5 = require('md5');
 
 function check(arr1, arr2) {
@@ -43,43 +43,47 @@ let testSet = [
   {
     name: 'test 2',
     description: 'Objects arrays; identifier as string; updating old values.',
-    arr1: [{id:1, value:'A'}, {id:2, value:'B'}],
-    arr2: [{id:2, value:'C'}, {id:3, value:'D'}],
+    arr1: [{id: 1, value: 'A'}, {id: 2, value: 'B'}],
+    arr2: [{id: 2, value: 'C'}, {id: 3, value: 'D'}],
     identifier: 'id',
-    expect: [{id:1, value:'A'}, {id:2, value:'C'}, {id:3, value:'D'}]
+    expect: [{id: 1, value: 'A'}, {id: 2, value: 'C'}, {id: 3, value: 'D'}]
   },
   {
     name: 'test 3',
     description: 'Objects arrays; identifier as string; update object structure.',
-    arr1: [{id:1, value:'A'}, {id:2, value:'B'}],
-    arr2: [{id:2}, {id:3, value:'D'}],
+    arr1: [{id: 1, value: 'A'}, {id: 2, value: 'B'}],
+    arr2: [{id: 2}, {id: 3, value: 'D'}],
     identifier: 'id',
-    expect: [{id:1, value:'A'}, {id:2}, {id:3, value:'D'}]
+    expect: [{id: 1, value: 'A'}, {id: 2}, {id: 3, value: 'D'}]
   },
   {
     name: 'test 4',
     description: 'Objects arrays; no identifier.',
-    arr1: [{value:'A', text:'text-A'}, {value:'B', key:42}],
-    arr2: [{value:'B', key:42}, {value:'D'}],
+    arr1: [{value: 'A', text: 'text-A'}, {value: 'B', key: 42}],
+    arr2: [{value: 'B', key: 42}, {value: 'D'}],
     identifier: null,
-    expect: [{value:'A', text:'text-A'}, {value:'B', key:42}, {value:'D'}]
+    expect: [{value: 'A', text: 'text-A'}, {value: 'B', key: 42}, {value: 'D'}]
   },
   {
     name: 'test 5',
     description: 'Objects arrays; identifier as function.',
-    arr1: [{key:'A', text:'text-A', child: {key: 'A'}}, {key:'A', text:'text-B', child: {key: 'B'}}],
-    arr2: [{key:'A', text:'text-C', child: {key: 'B'}}, {key:'B', text:'text-D', child: {key: 'A'}}],
+    arr1: [{key: 'A', text: 'text-A', child: {key: 'A'}}, {key: 'A', text: 'text-B', child: {key: 'B'}}],
+    arr2: [{key: 'A', text: 'text-C', child: {key: 'B'}}, {key: 'B', text: 'text-D', child: {key: 'A'}}],
     identifierAsFunc: true,
-    expect: [{key:'A', text:'text-A', child: {key: 'A'}}, {key:'A', text:'text-C', child: {key: 'B'}}, {key:'B', text:'text-D', child: {key: 'A'}}]
+    expect: [{key: 'A', text: 'text-A', child: {key: 'A'}}, {key: 'A', text: 'text-C', child: {key: 'B'}}, {
+      key: 'B',
+      text: 'text-D',
+      child: {key: 'A'}
+    }]
   },
   {
     name: 'test 6',
     description: 'Objects arrays; result array has objects copies.',
-    arr1: [{id:1, value:'A'}, {id:2, value:'B'}],
-    arr2: [{id:2, value:'C'}, {id:3, value:'D'}],
+    arr1: [{id: 1, value: 'A'}, {id: 2, value: 'B'}],
+    arr2: [{id: 2, value: 'C'}, {id: 3, value: 'D'}],
     identifier: 'id',
     after: true,
-    expect: [{id:1, value:'A'}, {id:2, value:'C'}, {id:3, value:'D'}]
+    expect: [{id: 1, value: 'A'}, {id: 2, value: 'C'}, {id: 3, value: 'D'}]
   },
   {
     name: 'test E1',
@@ -196,4 +200,5 @@ async function testAll() {
   console.log(`Async tests, OK: ${asyncOK}; Failed: ${asyncFailed};`);
 }
 
-testAll().then(()=>{})
+testAll().then(() => {
+})

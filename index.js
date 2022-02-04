@@ -5,23 +5,23 @@ const md5 = require('md5');
 ////////////////////////////////////////////////////////////////////////////////
 // Private (service) functions
 
-function jsonStringifySync (item) {
+function jsonStringifySync(item) {
   return JSON.stringify(item)
 }
 
-async function jsonStringifyAsync (item) {
+async function jsonStringifyAsync(item) {
   return JSON.stringify(item)
 }
 
-function jsonParseSync (str) {
+function jsonParseSync(str) {
   return JSON.parse(str)
 }
 
-async function jsonParseAsync (str) {
+async function jsonParseAsync(str) {
   return JSON.parse(str)
 }
 
-function deepCopySync (item) {
+function deepCopySync(item) {
   let copy = null;
   try {
     let str = jsonStringifySync(item);
@@ -32,7 +32,7 @@ function deepCopySync (item) {
   return copy;
 }
 
-async function deepCopyAsync (item) {
+async function deepCopyAsync(item) {
   let copy = null;
   try {
     let str = await jsonStringifyAsync(item);
@@ -43,32 +43,32 @@ async function deepCopyAsync (item) {
   return copy;
 }
 
-function hashStringSync (str) {
+function hashStringSync(str) {
   return md5(str)
 }
 
-async function hashStringAsync (str) {
+async function hashStringAsync(str) {
   return md5(str)
 }
 
-function hashObjectSync (obj) {
+function hashObjectSync(obj) {
   let str;
   try {
     str = jsonStringifySync(obj);
   } catch (error) {
     str = '0'; // obj has cyclical refs. bad tmp solution
   }
-  return hashStringSync (str);
+  return hashStringSync(str);
 }
 
-async function hashObjectAsync (obj) {
+async function hashObjectAsync(obj) {
   let str;
   try {
     str = await jsonStringifyAsync(obj);
   } catch (error) {
     str = '0'; // obj has cyclical refs. bad tmp solution
   }
-  return await hashStringAsync (str);
+  return await hashStringAsync(str);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ async function hashObjectAsync (obj) {
  * @param identifier - field or function for object matching (optional)
  * @returns {Promise<*[]>}
  */
-async function arrMergeAsync (arrOriginal, arrUpdate, identifier) {
+async function arrMergeAsync(arrOriginal, arrUpdate, identifier) {
   // check input
   if (!arrOriginal) {
     arrOriginal = [];
@@ -123,9 +123,10 @@ async function arrMergeAsync (arrOriginal, arrUpdate, identifier) {
     if (identifierIsFunc) {
       try {
         key = identifier(item);
-      } catch (error) {}
+      } catch (error) {
+      }
     }
-    mapOriginal[key] = { key, hash, index };
+    mapOriginal[key] = {key, hash, index};
   }
 
   // scan arrUpdate
@@ -139,18 +140,19 @@ async function arrMergeAsync (arrOriginal, arrUpdate, identifier) {
     if (identifierIsFunc) {
       try {
         key = identifier(item);
-      } catch (error) {}
+      } catch (error) {
+      }
     }
     if (mapOriginal[key]) { // item exists in arrOriginal
       if (mapOriginal[key].hash !== hash) { // need update
         let index = mapOriginal[key].index;
         arrResult[index] = await deepCopyAsync(item);
-        mapOriginal[key] = { key, hash, index };
+        mapOriginal[key] = {key, hash, index};
       }
     } else { // need append new item
       let index = indexNext;
       indexNext = arrResult.push(await deepCopyAsync(item));
-      mapOriginal[key] = { key, hash, index };
+      mapOriginal[key] = {key, hash, index};
     }
   }
 
@@ -165,7 +167,7 @@ async function arrMergeAsync (arrOriginal, arrUpdate, identifier) {
  * @param identifier - field or function for object matching (optional)
  * @returns {*[]}
  */
-function arrMergeSync (arrOriginal, arrUpdate, identifier) {
+function arrMergeSync(arrOriginal, arrUpdate, identifier) {
   // check input
   if (!arrOriginal) {
     arrOriginal = [];
@@ -206,9 +208,10 @@ function arrMergeSync (arrOriginal, arrUpdate, identifier) {
     if (identifierIsFunc) {
       try {
         key = identifier(item);
-      } catch (error) {}
+      } catch (error) {
+      }
     }
-    mapOriginal[key] = { key, hash, index };
+    mapOriginal[key] = {key, hash, index};
   }
 
   // scan arrUpdate
@@ -222,18 +225,19 @@ function arrMergeSync (arrOriginal, arrUpdate, identifier) {
     if (identifierIsFunc) {
       try {
         key = identifier(item);
-      } catch (error) {}
+      } catch (error) {
+      }
     }
     if (mapOriginal[key]) { // item exists in arrOriginal
       if (mapOriginal[key].hash !== hash) { // need update
         let index = mapOriginal[key].index;
         arrResult[index] = deepCopySync(item);
-        mapOriginal[key] = { key, hash, index };
+        mapOriginal[key] = {key, hash, index};
       }
     } else { // need append new item
       let index = indexNext;
       indexNext = arrResult.push(deepCopySync(item));
-      mapOriginal[key] = { key, hash, index };
+      mapOriginal[key] = {key, hash, index};
     }
   }
 
@@ -248,8 +252,8 @@ function arrMergeSync (arrOriginal, arrUpdate, identifier) {
  * @param identifier - field or function for object matching (optional)
  * @returns {*[]}
  */
-function arrMerge (arrOriginal, arrUpdate, identifier) {
-  return arrMergeSync (arrOriginal, arrUpdate, identifier)
+function arrMerge(arrOriginal, arrUpdate, identifier) {
+  return arrMergeSync(arrOriginal, arrUpdate, identifier)
 }
 
-module.exports = { arrMergeAsync, arrMergeSync, arrMerge };
+module.exports = {arrMergeAsync, arrMergeSync, arrMerge};
