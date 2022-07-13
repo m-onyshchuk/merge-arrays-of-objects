@@ -22,7 +22,7 @@ console.log(merged);
 ```
 
 #### Example 2
-Objects arrays; identifier as string; updating old values;
+Objects arrays; identifier as number; updating old values;
 ```js
 const { arrMergeSync } = require('merge-arrays-of-objects');
 
@@ -45,7 +45,7 @@ console.log(merged);
 ```
 
 #### Example 3
-Objects arrays; identifier as string; update object structure.
+Objects arrays; identifier as number; update object structure.
 ```js
 const { arrMergeSync } = require('merge-arrays-of-objects');
 
@@ -68,7 +68,7 @@ console.log(merged);
 ```
 
 #### Example 4
-Objects arrays; no identifier.
+Objects arrays; no identifiers.
 ```js
 const { arrMergeSync } = require('merge-arrays-of-objects');
 
