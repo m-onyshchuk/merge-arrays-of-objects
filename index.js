@@ -1,6 +1,7 @@
 'use strict';
 
 const md5 = require('md5');
+const PROD = process.env.NODE_ENV !== 'develop';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Private (service) functions
@@ -124,6 +125,9 @@ async function arrMergeAsync(arrOriginal, arrUpdate, identifier) {
       try {
         key = identifier(item);
       } catch (error) {
+        if (!PROD) {
+          console.error(error.message);
+        }
       }
     }
     mapOriginal[key] = {key, hash, index};
@@ -141,6 +145,9 @@ async function arrMergeAsync(arrOriginal, arrUpdate, identifier) {
       try {
         key = identifier(item);
       } catch (error) {
+        if (!PROD) {
+          console.error(error.message);
+        }
       }
     }
     if (mapOriginal[key]) { // item exists in arrOriginal
@@ -209,6 +216,9 @@ function arrMergeSync(arrOriginal, arrUpdate, identifier) {
       try {
         key = identifier(item);
       } catch (error) {
+        if (!PROD) {
+          console.error(error.message);
+        }
       }
     }
     mapOriginal[key] = {key, hash, index};
@@ -226,6 +236,9 @@ function arrMergeSync(arrOriginal, arrUpdate, identifier) {
       try {
         key = identifier(item);
       } catch (error) {
+        if (!PROD) {
+          console.error(error.message);
+        }
       }
     }
     if (mapOriginal[key]) { // item exists in arrOriginal

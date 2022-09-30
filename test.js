@@ -201,4 +201,5 @@ async function testAll() {
 }
 
 testAll().then(() => {
+  process.exit(0);
 })
