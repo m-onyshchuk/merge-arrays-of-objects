@@ -1,6 +1,6 @@
 {
   "name": "merge-arrays-of-objects",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "Merge two array of objects",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "objects"
   ],
   "author": "M.Onyshchuk",
-  "license": "MIT License",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/m-onyshchuk/merge-arrays-of-objects/issues"
   },
