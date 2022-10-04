@@ -1,4 +1,6 @@
-### Merge two array of objects
+# Merge two array of objects
+[![Workflow Status](https://github.com/m-onyshchuk/merge-arrays-of-objects/actions/workflows/node.js-tests.yml/badge.svg)](https://github.com/m-onyshchuk/merge-arrays-of-objects/actions)
+
 Arrays, not objects are being merged. 
 Objects with matching identifiers are replaced.
 Objects deep copies are placing into result array. 
@@ -8,7 +10,7 @@ You can use callback function to calc object identifier.
 
 There are sync and async function versions.
 
-#### Example 1
+## Example 1
 Simple arrays; no identifier. 
 ```js
 const { arrMergeSync } = require('merge-arrays-of-objects');
@@ -21,7 +23,7 @@ console.log(merged);
 // [1, 2, 3, 4, 5]
 ```
 
-#### Example 2
+## Example 2
 Objects arrays; identifier as number; updating old values;
 ```js
 const { arrMergeSync } = require('merge-arrays-of-objects');
@@ -44,7 +46,7 @@ console.log(merged);
 //   { id: 3, value: 'D' } ]
 ```
 
-#### Example 3
+## Example 3
 Objects arrays; identifier as number; update object structure.
 ```js
 const { arrMergeSync } = require('merge-arrays-of-objects');
@@ -67,7 +69,7 @@ console.log(merged);
 //   { id:3, value:'D' } ]
 ```
 
-#### Example 4
+## Example 4
 Objects arrays; no identifiers.
 ```js
 const { arrMergeSync } = require('merge-arrays-of-objects');
@@ -90,7 +92,7 @@ console.log(merged);
 //   { value:'D'} ]
 ```
 
-#### Example 5
+## Example 5
 Objects arrays; identifier as function.
 ```js
 const { arrMergeSync } = require('merge-arrays-of-objects');
@@ -117,7 +119,7 @@ console.log(merged);
 //   { key: 'B', text: 'text-D', child: { key: 'A' } } ]
 ```
 
-#### Example 6
+## Example 6
 Objects arrays; result array has objects copies.
 ```js
 const { arrMergeSync } = require('merge-arrays-of-objects');

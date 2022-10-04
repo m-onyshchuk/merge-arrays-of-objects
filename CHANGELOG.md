@@ -1,7 +1,6 @@
 # Changelog
 Changes by versions
 
-
 ## 1.1.18
 Tests changed for Jest.
 
