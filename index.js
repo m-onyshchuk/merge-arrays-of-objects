@@ -1,7 +1,6 @@
 'use strict';
 
 const md5 = require('md5');
-const PROD = process.env.NODE_ENV !== 'develop';
 
 ////////////////////////////////////////////////////////////////////////////////
 // Private (service) functions
@@ -80,6 +79,8 @@ async function _hashObjectAsync(obj) {
  * @returns {Promise<*[]>}
  */
 async function arrMergeAsync(arrOriginal, arrUpdate, identifier) {
+  const PROD = process.env.NODE_ENV !== 'develop';
+
   // check input
   if (!arrOriginal) {
     arrOriginal = [];
@@ -171,6 +172,8 @@ async function arrMergeAsync(arrOriginal, arrUpdate, identifier) {
  * @returns {*[]}
  */
 function arrMergeSync(arrOriginal, arrUpdate, identifier) {
+  const PROD = process.env.NODE_ENV !== 'develop';
+
   // check input
   if (!arrOriginal) {
     arrOriginal = [];

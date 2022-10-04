@@ -1,5 +1,6 @@
 'use strict';
 const {arrMergeAsync, arrMergeSync} = require("../index");
+const ENV = ['prod', 'develop'];
 
 function deepCopy(item) {
   let copy = null;
@@ -12,13 +13,39 @@ function deepCopy(item) {
   return copy;
 }
 
-function identifier(item) {
+function identifierOk(item) {
   return `${item.key}${item.child.key}`;
+}
+
+function identifierThrow(item) {
+  throw new Error('some error');
 }
 
 function after(arr1, arr2) {
   arr1[0].value = 'AA';
   arr2[1].value = 'DD';
+}
+
+function makeCircularObject() {
+  this.abc = "abc";
+  this.circular = this;
+}
+
+// let cyrc = new makeCircularObject();
+
+function makeCircularTest(testArr) {
+  let item = deepCopy(testArr[0]);
+  item.name = 'C1';
+  item.description = 'Circular object in array';
+  item.arr1 = [1];
+  item.arr1.push(new makeCircularObject());
+  item.arr2 = [2];
+  item.arr2.push(new makeCircularObject());
+  item.expect = [];
+  item.expect.push(1);
+  item.expect.push(new makeCircularObject());
+  item.expect.push(2);
+  testArr.push(item);
 }
 
 let testSet = [
@@ -59,7 +86,7 @@ let testSet = [
     description: 'Objects arrays; identifier as function.',
     arr1: [{key: 'A', text: 'text-A', child: {key: 'A'}}, {key: 'A', text: 'text-B', child: {key: 'B'}}],
     arr2: [{key: 'A', text: 'text-C', child: {key: 'B'}}, {key: 'B', text: 'text-D', child: {key: 'A'}}],
-    identifierAsFunc: true,
+    identifierAsFunc: 1,
     expect: [{key: 'A', text: 'text-A', child: {key: 'A'}}, {key: 'A', text: 'text-C', child: {key: 'B'}}, {
       key: 'B',
       text: 'text-D',
@@ -68,6 +95,25 @@ let testSet = [
   },
   {
     name: 'test 6',
+    description: 'Objects arrays; identifier as wrong function',
+    arr1: [
+      {key: 'A', text: 'text-A', child: {key: 'A'}},
+      {key: 'A', text: 'text-B', child: {key: 'B'}}
+    ],
+    arr2: [
+      {key: 'A', text: 'text-C', child: {key: 'B'}},
+      {key: 'B', text: 'text-D', child: {key: 'A'}}
+    ],
+    identifierAsFunc: 2,
+    expect: [
+      {key: 'A', text: 'text-A', child: {key: 'A'}},
+      {key: 'A', text: 'text-B', child: {key: 'B'}},
+      {key: 'A', text: 'text-C', child: {key: 'B'}},
+      {key: 'B', text: 'text-D', child: {key: 'A'}}
+    ]
+  },
+  {
+    name: 'test 7',
     description: 'Objects arrays; result array has objects copies.',
     arr1: [{id: 1, value: 'A'}, {id: 2, value: 'B'}],
     arr2: [{id: 2, value: 'C'}, {id: 3, value: 'D'}],
@@ -109,34 +155,51 @@ let testSet = [
   },
 ];
 
+
 describe('Sync tests', () => {
-  let testSetSync = deepCopy(testSet);
-  for (let item of testSetSync) {
-    test(item.name, () => {
-      if (item.identifierAsFunc) {
-        item.identifier = identifier;
-      }
-      let merged = arrMergeSync(item.arr1, item.arr2, item.identifier);
-      if (item.after) {
-        after(item.arr1, item.arr2);
-      }
-      expect(merged.sort()).toEqual(item.expect.sort());
-    });
-  }  
+  for (let env of ENV) {
+    process.env.NODE_ENV = env;
+    let testSetSync = deepCopy(testSet);
+    makeCircularTest(testSetSync);
+    for (let item of testSetSync) {
+      test(`${env}, ${item.name}: ${item.description}`, () => {
+        if (item.identifierAsFunc === 1) {
+          item.identifier = identifierOk;
+        }
+        if (item.identifierAsFunc === 2) {
+          item.identifier = identifierThrow;
+        }
+        let merged = arrMergeSync(item.arr1, item.arr2, item.identifier);
+        if (item.after) {
+          after(item.arr1, item.arr2);
+        }
+        merged.sort();
+        item.expect.sort();
+        expect(merged).toEqual(item.expect);
+      });
+    }
+  }
 })
 
 describe('Async tests', () => {
-  let testSetAsync = deepCopy(testSet);
-  for (let item of testSetAsync) {
-    test(item.name, async () => {
-      if (item.identifierAsFunc) {
-        item.identifier = identifier;
-      }
-      let merged = await arrMergeAsync(item.arr1, item.arr2, item.identifier);
-      if (item.after) {
-        after(item.arr1, item.arr2);
-      }
-      expect(merged.sort()).toEqual(item.expect.sort());
-    });
+  for (let env of ENV) {
+    process.env.NODE_ENV = env;
+    let testSetAsync = deepCopy(testSet);
+    makeCircularTest(testSetAsync);
+    for (let item of testSetAsync) {
+      test(`${env}, ${item.name}: ${item.description}`, async () => {
+        if (item.identifierAsFunc === 1) {
+          item.identifier = identifierOk;
+        }
+        if (item.identifierAsFunc === 2) {
+          item.identifier = identifierThrow;
+        }
+        let merged = await arrMergeAsync(item.arr1, item.arr2, item.identifier);
+        if (item.after) {
+          after(item.arr1, item.arr2);
+        }
+        expect(merged.sort()).toEqual(item.expect.sort());
+      });
+    }
   }
 })
