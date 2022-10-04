@@ -1,5 +1,6 @@
 # Merge two array of objects
 [![Workflow Status](https://github.com/m-onyshchuk/merge-arrays-of-objects/actions/workflows/node.js-tests.yml/badge.svg)](https://github.com/m-onyshchuk/merge-arrays-of-objects/actions)
+[![Coverage Status](https://coveralls.io/repos/github/m-onyshchuk/merge-arrays-of-objects/badge.svg?branch=master)](https://coveralls.io/github/m-onyshchuk/merge-arrays-of-objects?branch=master)
 
 Arrays, not objects are being merged. 
 Objects with matching identifiers are replaced.
