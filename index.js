@@ -257,16 +257,4 @@ function arrMergeSync(arrOriginal, arrUpdate, identifier) {
   return arrResult;
 }
 
-/**
- * Sync merge two array of objects
- *
- * @param arrOriginal - original array
- * @param arrUpdate - array for update
- * @param identifier - field or function for object matching (optional)
- * @returns {*[]}
- */
-function arrMerge(arrOriginal, arrUpdate, identifier) {
-  return arrMergeSync(arrOriginal, arrUpdate, identifier)
-}
-
-module.exports = {arrMergeAsync, arrMergeSync, arrMerge};
+module.exports = {arrMergeAsync, arrMergeSync};

@@ -1,10 +1,11 @@
 {
   "name": "merge-arrays-of-objects",
-  "version": "1.1.17",
+  "version": "1.1.18",
   "description": "Merge two array of objects. Arrays, not objects are being merged.",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js",
+    "test": "jest",
+    "coverage": "jest --coverage",
     "lint": "npx eslint *.js"
   },
   "repository": {
@@ -26,6 +27,8 @@
     "md5": "^2.3.0"
   },
   "devDependencies": {
-    "eslint": "^8.24.0"
+    "@types/jest": "^29.0.3",
+    "eslint": "^8.24.0",
+    "jest": "^29.0.3"
   }
 }

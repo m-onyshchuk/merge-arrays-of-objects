@@ -1,14 +1,5 @@
-////////////////////////////////////////////////////////////////////////////////
-// Test of exported functions. Run command: npm test
-
-const {arrMergeAsync, arrMergeSync} = require('./index');
-const md5 = require('md5');
-
-function check(arr1, arr2) {
-  let hash1 = md5(JSON.stringify(arr1));
-  let hash2 = md5(JSON.stringify(arr2));
-  return hash1 === hash2 ? 'OK' : 'Failed';
-}
+'use strict';
+const {arrMergeAsync, arrMergeSync} = require("../index");
 
 function deepCopy(item) {
   let copy = null;
@@ -28,7 +19,6 @@ function identifier(item) {
 function after(arr1, arr2) {
   arr1[0].value = 'AA';
   arr2[1].value = 'DD';
-  return "arr1[0].value = 'AA'; arr2[1].value = 'DD';";
 }
 
 let testSet = [
@@ -119,87 +109,34 @@ let testSet = [
   },
 ];
 
-function testSync() {
-  console.log('==== sync test start ====');
-  console.log('');
-
-  let countOK = 0;
-  let countFailed = 0;
+describe('Sync tests', () => {
   let testSetSync = deepCopy(testSet);
-  for (let test of testSetSync) {
-    console.log(`---- sync ${test.name} ----`);
-    console.log(test.description);
-    console.log('arr1: ', test.arr1);
-    console.log('arr2: ', test.arr2);
-    console.log('expect: ', test.expect);
-    if (test.identifierAsFunc) {
-      test.identifier = identifier;
-    }
-    let merged = arrMergeSync(test.arr1, test.arr2, test.identifier);
-    if (test.after) {
-      let modification = after(test.arr1, test.arr2);
-      console.log('after: ', modification);
-    }
-    console.log('merge:  ', merged);
-    let result = check(test.expect, merged);
-    if (result === 'OK') {
-      countOK++;
-    } else {
-      countFailed++;
-    }
-    console.log('result: ', result);
-    console.log('');
-  }
+  for (let item of testSetSync) {
+    test(item.name, () => {
+      if (item.identifierAsFunc) {
+        item.identifier = identifier;
+      }
+      let merged = arrMergeSync(item.arr1, item.arr2, item.identifier);
+      if (item.after) {
+        after(item.arr1, item.arr2);
+      }
+      expect(merged.sort()).toEqual(item.expect.sort());
+    });
+  }  
+})
 
-  console.log('==== test end ====');
-  console.log('');
-  return [countOK, countFailed];
-}
-
-async function testAsync() {
-  console.log('==== async test start ====');
-  console.log('');
-
-  let countOK = 0;
-  let countFailed = 0;
+describe('Async tests', () => {
   let testSetAsync = deepCopy(testSet);
-  for (let test of testSetAsync) {
-    console.log(`---- async ${test.name} ----`);
-    console.log(test.description);
-    console.log('arr1: ', test.arr1);
-    console.log('arr2: ', test.arr2);
-    console.log('expect: ', test.expect);
-    if (test.identifierAsFunc) {
-      test.identifier = identifier;
-    }
-    let merged = await arrMergeAsync(test.arr1, test.arr2, test.identifier);
-    if (test.after) {
-      let modification = after(test.arr1, test.arr2);
-      console.log('after: ', modification);
-    }
-    console.log('merge:  ', merged);
-    let result = check(test.expect, merged);
-    if (result === 'OK') {
-      countOK++;
-    } else {
-      countFailed++;
-    }
-    console.log('result: ', result);
-    console.log('');
+  for (let item of testSetAsync) {
+    test(item.name, async () => {
+      if (item.identifierAsFunc) {
+        item.identifier = identifier;
+      }
+      let merged = await arrMergeAsync(item.arr1, item.arr2, item.identifier);
+      if (item.after) {
+        after(item.arr1, item.arr2);
+      }
+      expect(merged.sort()).toEqual(item.expect.sort());
+    });
   }
-
-  console.log('==== test end ====');
-  console.log('');
-  return [countOK, countFailed];
-}
-
-async function testAll() {
-  let [syncOK, syncFailed] = testSync();
-  let [asyncOK, asyncFailed] = await testAsync();
-  console.log(` Sync tests, OK: ${syncOK}; Failed: ${syncFailed};`);
-  console.log(`Async tests, OK: ${asyncOK}; Failed: ${asyncFailed};`);
-}
-
-testAll().then(() => {
-  process.exit(0);
 })
