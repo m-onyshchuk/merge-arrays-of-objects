@@ -6,70 +6,66 @@ const PROD = process.env.NODE_ENV !== 'develop';
 ////////////////////////////////////////////////////////////////////////////////
 // Private (service) functions
 
-function jsonStringifySync(item) {
+function _jsonStringifySync(item) {
   return JSON.stringify(item)
 }
 
-async function jsonStringifyAsync(item) {
+async function _jsonStringifyAsync(item) {
   return JSON.stringify(item)
 }
 
-function jsonParseSync(str) {
+function _jsonParseSync(str) {
   return JSON.parse(str)
 }
 
-async function jsonParseAsync(str) {
+async function _jsonParseAsync(str) {
   return JSON.parse(str)
 }
 
-function deepCopySync(item) {
+function _deepCopySync(item) {
   let copy = null;
   try {
-    let str = jsonStringifySync(item);
-    copy = jsonParseSync(str);
+    let str = _jsonStringifySync(item);
+    copy = _jsonParseSync(str);
   } catch (e) {
     copy = item; // item has circ refs, do not use deep copy
   }
   return copy;
 }
 
-async function deepCopyAsync(item) {
+async function _deepCopyAsync(item) {
   let copy = null;
   try {
-    let str = await jsonStringifyAsync(item);
-    copy = await jsonParseAsync(str);
+    let str = await _jsonStringifyAsync(item);
+    copy = await _jsonParseAsync(str);
   } catch (e) {
     copy = item; // item has circ refs, do not use deep copy
   }
   return copy;
 }
 
-function hashStringSync(str) {
+function _hashString(str) {
   return md5(str)
 }
 
-async function hashStringAsync(str) {
-  return md5(str)
-}
-
-function hashObjectSync(obj) {
+function _hashObjectSync(obj) {
   let str;
   try {
-    str = jsonStringifySync(obj);
+    str = _jsonStringifySync(obj);
   } catch (error) {
     str = '0'; // obj has cyclical refs. bad tmp solution
   }
-  return hashStringSync(str);
+  return _hashString(str);
 }
 
-async function hashObjectAsync(obj) {
+async function _hashObjectAsync(obj) {
   let str;
   try {
-    str = await jsonStringifyAsync(obj);
+    str = await _jsonStringifyAsync(obj);
   } catch (error) {
     str = '0'; // obj has cyclical refs. bad tmp solution
   }
-  return await hashStringAsync(str);
+  return _hashString(str);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +98,7 @@ async function arrMergeAsync(arrOriginal, arrUpdate, identifier) {
   }
 
   // init
-  let arrResult = [].concat(await deepCopyAsync(arrOriginal));
+  let arrResult = [].concat(await _deepCopyAsync(arrOriginal));
   let mapOriginal = {};
 
   let identifierAbsent = !identifier;
@@ -116,7 +112,7 @@ async function arrMergeAsync(arrOriginal, arrUpdate, identifier) {
   // scan Original
   for (let index = 0; index < arrOriginal.length; index++) {
     let item = arrOriginal[index];
-    let hash = await hashObjectAsync(item);
+    let hash = await _hashObjectAsync(item);
     let key = hash; // default case identifierAbsent
     if (identifierIsStr) {
       key = item[identifier];
@@ -136,7 +132,7 @@ async function arrMergeAsync(arrOriginal, arrUpdate, identifier) {
   // scan arrUpdate
   let indexNext = arrResult.length;
   for (let item of arrUpdate) {
-    let hash = await hashObjectAsync(item);
+    let hash = await _hashObjectAsync(item);
     let key = hash; // default case identifierAbsent
     if (identifierIsStr) {
       key = item[identifier];
@@ -153,12 +149,12 @@ async function arrMergeAsync(arrOriginal, arrUpdate, identifier) {
     if (mapOriginal[key]) { // item exists in arrOriginal
       if (mapOriginal[key].hash !== hash) { // need update
         let index = mapOriginal[key].index;
-        arrResult[index] = await deepCopyAsync(item);
+        arrResult[index] = await _deepCopyAsync(item);
         mapOriginal[key] = {key, hash, index};
       }
     } else { // need append new item
       let index = indexNext;
-      indexNext = arrResult.push(await deepCopyAsync(item));
+      indexNext = arrResult.push(await _deepCopyAsync(item));
       mapOriginal[key] = {key, hash, index};
     }
   }
@@ -193,7 +189,7 @@ function arrMergeSync(arrOriginal, arrUpdate, identifier) {
   }
 
   // init
-  let arrResult = [].concat(deepCopySync(arrOriginal));
+  let arrResult = [].concat(_deepCopySync(arrOriginal));
   let mapOriginal = {};
 
   let identifierAbsent = !identifier;
@@ -207,7 +203,7 @@ function arrMergeSync(arrOriginal, arrUpdate, identifier) {
   // scan Original
   for (let index = 0; index < arrOriginal.length; index++) {
     let item = arrOriginal[index];
-    let hash = hashObjectSync(item);
+    let hash = _hashObjectSync(item);
     let key = hash; // default case identifierAbsent
     if (identifierIsStr) {
       key = item[identifier];
@@ -227,7 +223,7 @@ function arrMergeSync(arrOriginal, arrUpdate, identifier) {
   // scan arrUpdate
   let indexNext = arrResult.length;
   for (let item of arrUpdate) {
-    let hash = hashObjectSync(item);
+    let hash = _hashObjectSync(item);
     let key = hash; // default case identifierAbsent
     if (identifierIsStr) {
       key = item[identifier];
@@ -244,12 +240,12 @@ function arrMergeSync(arrOriginal, arrUpdate, identifier) {
     if (mapOriginal[key]) { // item exists in arrOriginal
       if (mapOriginal[key].hash !== hash) { // need update
         let index = mapOriginal[key].index;
-        arrResult[index] = deepCopySync(item);
+        arrResult[index] = _deepCopySync(item);
         mapOriginal[key] = {key, hash, index};
       }
     } else { // need append new item
       let index = indexNext;
-      indexNext = arrResult.push(deepCopySync(item));
+      indexNext = arrResult.push(_deepCopySync(item));
       mapOriginal[key] = {key, hash, index};
     }
   }
